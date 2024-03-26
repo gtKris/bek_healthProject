@@ -30,9 +30,10 @@ namespace bek_healthProject.Models.DAO
 
                 return "Create doctor successfully.";
             }
-            catch (Exception ex)
+            catch (MySqlException ex)
             {
-                throw new Exception("An error occurred while creating doctor: " + ex.Message);
+                Console.WriteLine("An error occurred while creating doctor: " + ex.Message);
+                throw;
             }
         }
 

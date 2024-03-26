@@ -19,8 +19,7 @@ namespace bek_healthProject.Models.DTO
         public string Address { get; set; }
 
         [Required(ErrorMessage = "The phone number field is required")]
-        [MaxLength(8, ErrorMessage = "The phone number field cannot exceed 8 characters")]
-        [RegularExpression(@"^[0-9]+$", ErrorMessage = "Only digits are allowed")]
+        [RegularExpression(@"^\d{8}$", ErrorMessage = "The phone number must be exactly 8 digits")]
         public string PhoneNumber { get; set; }
 
         [Required(ErrorMessage = "The email field is required")]

@@ -27,5 +27,8 @@ namespace bek_healthProject.Models.DTO
 
         [MaxLength(20, ErrorMessage = "The state field cannot exceed 20 characters")]
         public string State { get; set; }
+
+        [MaxLength(20, ErrorMessage = "The state field cannot exceed 20 characters")]
+        public string appointment_type {  get; set; }
     }
 }

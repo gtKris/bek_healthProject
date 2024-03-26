@@ -16,7 +16,7 @@ namespace bek_healthProject.Models.DAO
                 using (MySqlConnection con = SecurityConfig.GetConnection())
                 {
                     con.Open();
-                    string insertQuery = "INSERT INTO bek_appointments (appointment_date, appointment_hour, customer_id, doctor_id, appointment_description, state) VALUES (@pAppointmentDate, @pAppointmentHour, @pCustomerId, @pDoctorId, @pAppointmentDescription, @pState)";
+                    string insertQuery = "INSERT INTO bek_appointments (appointment_date, appointment_hour, customer_id, doctor_id, appointment_description, state , appointment_type) VALUES (@pAppointmentDate, @pAppointmentHour, @pCustomerId, @pDoctorId, @pAppointmentDescription, @pState,@appointment_type)";
                     using (var cmd = new MySqlCommand(insertQuery, con))
                     {
                         cmd.Parameters.AddWithValue("@pAppointmentDate", appointment.AppointmentDate);
@@ -25,6 +25,7 @@ namespace bek_healthProject.Models.DAO
                         cmd.Parameters.AddWithValue("@pDoctorId", appointment.DoctorId);
                         cmd.Parameters.AddWithValue("@pAppointmentDescription", appointment.AppointmentDescription);
                         cmd.Parameters.AddWithValue("@pState", appointment.State);
+                        cmd.Parameters.AddWithValue("@appointment_type", appointment.appointment_type);
                         cmd.ExecuteNonQuery();
                     }
                 }
@@ -103,7 +104,7 @@ namespace bek_healthProject.Models.DAO
                 using (MySqlConnection con = SecurityConfig.GetConnection())
                 {
                     con.Open();
-                    String updateQuery = "UPDATE bek_appointments SET appointment_date = @pAppointmentDate, appointment_hour = @pAppointmentHour, customer_id = @pCustomerId, doctor_id = @pDoctorId, appointment_description = @pAppointmentDescription, state = @pState WHERE id = @pId";
+                    String updateQuery = "UPDATE bek_appointments SET appointment_date = @pAppointmentDate, appointment_hour = @pAppointmentHour, customer_id = @pCustomerId, doctor_id = @pDoctorId, appointment_description = @pAppointmentDescription, state = @pState , appointment_type = @appointment_type  WHERE id = @pId";
                     using (var cmd = new MySqlCommand(updateQuery, con))
                     {
                         cmd.Parameters.AddWithValue("@pId", id);
@@ -113,6 +114,7 @@ namespace bek_healthProject.Models.DAO
                         cmd.Parameters.AddWithValue("@pDoctorId", appointment.DoctorId);
                         cmd.Parameters.AddWithValue("@pAppointmentDescription", appointment.AppointmentDescription);
                         cmd.Parameters.AddWithValue("@pState", appointment.State);
+                        cmd.Parameters.AddWithValue("@appointment_type", appointment.appointment_type);
                         cmd.ExecuteNonQuery();
                     }
                 }
@@ -153,6 +155,7 @@ namespace bek_healthProject.Models.DAO
             appointment.DoctorId = reader.GetInt32("doctor_id");
             appointment.AppointmentDescription = reader.GetString("appointment_description");
             appointment.State = reader.GetString("state");
+            appointment.appointment_type=reader.GetString("appointment_type");
         }
     }
 }

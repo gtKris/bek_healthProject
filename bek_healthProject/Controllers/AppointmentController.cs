@@ -11,10 +11,12 @@ namespace bek_healthProject.Controllers
 {
     public class AppointmentController : Controller
     {
+        private AppointmentDAO dao = new AppointmentDAO();
         // GET: Appointment
         public ActionResult Index()
         {
-            return View();
+            var appointments = dao.ReadAppointments();
+            return View(appointments);
         }
 
         // GET: Appointment/Details/5

@@ -61,6 +61,17 @@ namespace bek_healthProject.Controllers
                         TempData["ErrorMessage"] = "The phone number is not available"; 
                     }
                 }
+
+                if (ex.Message.Contains("email"))
+                {
+                    TempData["ErrorMessage"] = "The email is already is not available";
+                }
+                else if (ex.Message.Contains("phone_number"))
+                {
+                    TempData["ErrorMessage"] = "The phone number is not available";
+                }
+
+
                 else
                 {
                     TempData["ErrorMessage"] = "An error occurred while trying to create a user."; 

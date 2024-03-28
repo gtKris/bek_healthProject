@@ -1,0 +1,40 @@
+﻿@model bek_healthProject.Models.DTO.DoctorDTO
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<div class="container">
+    <h2 class="mt-5">Doctor Details</h2>
+    <hr />
+
+    <div class="row">
+        <div class="col-md-6">
+            <dl class="row">
+                <dt class="col-sm-3">Last Name:</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.LastName)</dd>
+
+                <dt class="col-sm-3">Address:</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Address)</dd>
+
+                <dt class="col-sm-3">Phone Number:</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.PhoneNumber)</dd>
+
+                <dt class="col-sm-3">Email:</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Email)</dd>
+
+                <dt class="col-sm-3">Specialty:</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Specialty)</dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-md-6">
+            <p>
+                @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-primary" })
+                @Html.ActionLink("Back to List", "Index", new { @class = "btn btn-secondary ml-2" })
+            </p>
+        </div>
+    </div>
+</div>

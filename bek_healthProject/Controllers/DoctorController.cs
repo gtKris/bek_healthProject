@@ -4,22 +4,27 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using bek_healthProject.Models.DAO;
+using bek_healthProject.Models;
 using bek_healthProject.Models.DTO;
+using MySql.Data.MySqlClient;
+using System.Numerics;
 
 namespace bek_healthProject.Controllers
 {
     public class DoctorController : Controller
     {
+        private DoctorDAO dao = new DoctorDAO();
         // GET: Doctor
         public ActionResult Index()
         {
-            return View();
+            var doctor = dao.ReadDoctors();
+            return View(doctor);
         }
 
         // GET: Doctor/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            return View(dao.ReadDoctor(id));
         }
 
         // GET: Doctor/Create
@@ -30,16 +35,34 @@ namespace bek_healthProject.Controllers
 
         // POST: Doctor/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(DoctorDTO doctor)
         {
             try
             {
-                // TODO: Add insert logic here
 
+                TempData["SuccessMessage"] = "User created successfully.";
+                string result = dao.CreateDoctor(doctor);
                 return RedirectToAction("Index");
             }
-            catch
+            catch (MySqlException ex)
             {
+                if (ex.Number == 1062)
+                {
+                    if (ex.Message.Contains("email"))
+                    {
+                        TempData["ErrorMessage"] = "The email is already is not available";
+                    }
+                    else if (ex.Message.Contains("phone_number"))
+                    {
+                        TempData["ErrorMessage"] = "The phone number is not available";
+                    }
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "An error occurred while trying to create a user.";
+                }
+
+                Console.WriteLine("An error occurred while trying to create a user: " + ex);
                 return View();
             }
         }
@@ -47,44 +70,51 @@ namespace bek_healthProject.Controllers
         // GET: Doctor/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            return View(dao.ReadDoctor(id));
         }
 
         // POST: Doctor/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(int id, DoctorDTO doctor)
         {
             try
             {
-                // TODO: Add update logic here
 
+                TempData["SuccessMessage"] = "User edited successfully.";
+                dao.EditDoctor(id, doctor);
                 return RedirectToAction("Index");
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                TempData["ErrorMessage"] = "An error occurred while trying edit the user";
+                Console.WriteLine("An error occurred while trying edit the user" + ex);
+                return RedirectToAction("Index");
+
             }
         }
 
         // GET: Doctor/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            DoctorDTO doctor = dao.ReadDoctor(id);
+            return View(doctor);
         }
 
         // POST: Doctor/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult Delete(int id, DoctorDTO doctor)
         {
             try
             {
-                // TODO: Add delete logic here
-
+                TempData["SuccessMessage"] = "User deleted successfully.";
+                dao.DeleteDoctor(id);
                 return RedirectToAction("Index");
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                TempData["ErrorMessage"] = "An error occurred while trying delete the user";
+                Console.WriteLine("An error occurred while trying to delete the user" + ex);
+                return View(dao.ReadDoctors());
             }
         }
     }

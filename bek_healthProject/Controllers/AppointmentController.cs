@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using bek_healthProject.Models.DAO;
 using bek_healthProject.Models.DTO;
+using MySql.Data.MySqlClient;
 
 
 namespace bek_healthProject.Controllers
@@ -12,6 +13,8 @@ namespace bek_healthProject.Controllers
     public class AppointmentController : Controller
     {
         private AppointmentDAO dao = new AppointmentDAO();
+        private readonly CustomerDao customerDao = new CustomerDao(); 
+        private readonly DoctorDAO doctorDao = new DoctorDAO();
         // GET: Appointment
         public ActionResult Index()
         {
@@ -22,27 +25,49 @@ namespace bek_healthProject.Controllers
         // GET: Appointment/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            return View(dao.ReadAppointment(id));
         }
 
         // GET: Appointment/Create
         public ActionResult Create()
         {
+
+            var customerIds = customerDao.ReadCustomers().Select(c => new SelectListItem
+            {
+                Value = c.Id.ToString(),
+                Text = c.Id.ToString()
+            }).ToList();
+
+            var doctorsIds = doctorDao.ReadDoctors().Select(d => new SelectListItem
+            {
+                Value = d.Id.ToString(),
+                Text = d.Id.ToString()
+            }).ToList();
+
+            ViewBag.CustomerIds = customerIds;
+            ViewBag.DoctorIds = doctorsIds;
+
+
             return View();
         }
 
         // POST: Appointment/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(AppointmentDTO appointmet)
         {
+
+
             try
             {
-                // TODO: Add insert logic here
-
+                TempData["SuccessMessage"] = "Appointment created successfully.";
+                string result = dao.CreateAppointment(appointmet);
                 return RedirectToAction("Index");
+
+               
             }
-            catch
+            catch(MySqlException ex)
             {
+                Console.WriteLine("An error occurred while trying to create a user: " + ex);
                 return View();
             }
         }
@@ -50,22 +75,48 @@ namespace bek_healthProject.Controllers
         // GET: Appointment/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            var appointment = dao.ReadAppointment(id);
+
+            // Obtener la lista de IDs y nombres de clientes
+            var customerIds = customerDao.ReadCustomers().Select(c => new SelectListItem
+            {
+                Value = c.Id.ToString(),
+                Text = c.Id.ToString()
+            }).ToList();
+
+
+            var doctorsIds = doctorDao.ReadDoctors().Select(d => new SelectListItem
+            {
+                Value = d.Id.ToString(),
+                Text = d.Id.ToString()
+            }).ToList();
+
+            var selectedDoctor = doctorDao.ReadDoctor(appointment.DoctorId).Name;
+
+            ViewBag.CustomerIds = customerIds;
+            ViewBag.DoctorIds = doctorsIds;
+            ViewBag.SelectedDoctor = selectedDoctor;
+
+            return View(appointment);
         }
 
         // POST: Appointment/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(int id, AppointmentDTO appointment)
         {
             try
             {
-                // TODO: Add update logic here
 
+                TempData["SuccessMessage"] = "User edited successfully.";
+                dao.EditAppointment(id, appointment);
                 return RedirectToAction("Index");
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                TempData["ErrorMessage"] = "An error occurred while trying edit the user";
+                Console.WriteLine("An error occurred while trying edit the user" + ex);
+                return RedirectToAction("Index");
+
             }
         }
 
@@ -90,5 +141,18 @@ namespace bek_healthProject.Controllers
                 return View();
             }
         }
+
+        public ActionResult GetCustomerNameById(int id)
+        {
+            var customer = customerDao.ReadCustomer(id);
+            return Json(customer.Name, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult GetDoctorNameById(int id)
+        {
+            var doctor = doctorDao.ReadDoctor(id);
+            return Json(doctor.Name, JsonRequestBehavior.AllowGet);
+        }
+
     }
 }

@@ -1,0 +1,33 @@
+﻿@model bek_healthProject.Models.DTO.AppointmentDTO
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            Appointment Details
+        </div>
+        <div class="card-body">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Appointment ID: @Model.Id</li>
+                <li class="list-group-item">Date: @Html.DisplayFor(model => model.AppointmentDate)</li>
+                <li class="list-group-item">Hour: @Html.DisplayFor(model => model.AppointmentHour)</li>
+                <li class="list-group-item">Customer ID: @Html.DisplayFor(model => model.CustomerId)</li>
+                <li class="list-group-item">Customer Name: @Html.DisplayFor(model => model.CustomerName)</li>
+                <li class="list-group-item">Doctor ID: @Html.DisplayFor(model => model.DoctorId)</li>
+                <li class="list-group-item">Doctor Name: @Html.DisplayFor(model => model.DoctorName)</li>
+                <li class="list-group-item">Description: @Html.DisplayFor(model => model.AppointmentDescription)</li>
+                <li class="list-group-item">State: @Html.DisplayFor(model => model.State)</li>
+                <li class="list-group-item">Type: @Html.DisplayFor(model => model.appointment_type)</li>
+            </ul>
+        </div>
+        <div class="card-footer text-muted">
+            @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-primary" })
+            @Html.ActionLink("Back to List", "Index", new { @class = "btn btn-secondary" })
+        </div>
+    </div>
+</div>

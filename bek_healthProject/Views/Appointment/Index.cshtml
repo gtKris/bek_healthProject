@@ -1,0 +1,43 @@
+﻿@model IEnumerable<bek_healthProject.Models.DTO.AppointmentDTO>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+<div class="row">
+
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Appointment ID: @item.Id</h5>
+                    <p class="card-text">Date: @Html.DisplayFor(modelItem => item.AppointmentDate)</p>
+                    <p class="card-text">Hour: @Html.DisplayFor(modelItem => item.AppointmentHour)</p>
+                    <p class="card-text">Customer Name: @Html.DisplayFor(modelItem => item.CustomerName)</p>
+                    <p class="card-text">Doctor Name: @Html.DisplayFor(modelItem => item.DoctorName)</p>
+                    <p class="card-text">Description: @Html.DisplayFor(modelItem => item.AppointmentDescription)</p>
+                    <p class="card-text">State: @Html.DisplayFor(modelItem => item.State)</p>
+                    <p class="card-text">Type: @Html.DisplayFor(modelItem => item.appointment_type)</p>
+                    <div class="btn-group" role="group" aria-label="Actions">
+                        @if (item.State != "CANCELED")
+                        {
+                            @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-primary" })
+                        }
+                        @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-secondary" })
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+
+
+</div>

@@ -1,0 +1,190 @@
+﻿@model bek_healthProject.Models.DTO.AppointmentDTO
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <h4>AppointmentDTO</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.Id)
+
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.AppointmentDate, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <input type="date" id="AppointmentDate" name="AppointmentDate" class="form-control" value="@Model.AppointmentDate.ToString("yyyy-MM-dd")" />
+            @Html.ValidationMessageFor(model => model.AppointmentDate, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.AppointmentHour, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.AppointmentHour, new SelectList(
+            new List<string>
+            {
+                "7:00:00",
+                "7:30:00",
+                "8:00:00",
+                "8:30:00",
+                "9:00:00",
+                "9:30:00",
+                "10:00:00",
+                "10:30:00",
+                "11:00:00",
+                "11:30:00",
+                "13:00:00",
+                "13:30:00",
+                "14:00:00",
+                "14:30:00",
+                "15:00:00",
+                "15:30:00",
+                "16:00:00",
+                "16:30:00"
+
+            }), new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.AppointmentHour, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.CustomerId, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.CustomerId, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+            @Html.ValidationMessageFor(model => model.CustomerId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.CustomerName, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.CustomerName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+            @Html.ValidationMessageFor(model => model.CustomerName, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.DoctorId, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-5">
+            @Html.DropDownListFor(model => model.DoctorId, new SelectList(
+                ViewBag.DoctorIds, "Value", "Text"), "Select Doctor", new { @class = "form-control", id = "doctorIdDropdown" })
+            @Html.ValidationMessageFor(model => model.DoctorId, "", new { @class = "text-danger" })
+        </div>
+        <div class="col-md-5">
+            <span id="doctorName" class="name-span">@ViewBag.SelectedDoctor</span>
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.AppointmentDescription, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.AppointmentDescription, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.AppointmentDescription, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.State, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.State, new SelectList(
+                new List<string>
+                {
+                    "CONFIRMED",
+                    "CANCELED",
+                    "COMPLETED"
+                }, Model.State), "Select State", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.State, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.appointment_type, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.appointment_type, new SelectList(
+                new List<string>
+                {
+                    "Pediatrics",
+                    "Cardiology",
+                    "Oncology",
+                    "Neurology",
+                    "Gastroenterology",
+                    "Orthopedics",
+                    "Dermatology",
+                    "Psychiatry",
+                    "Obstetrics",
+                    "Gynecology",
+                    "Ophthalmology"
+                }), "Select Specialty", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.appointment_type, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save" class="btn btn-default" />
+        </div>
+    </div>
+</div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+<link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet" />
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet" />
+    <script>
+        $(document).ready(function () {
+            $("#datepicker").datepicker({
+                dateFormat: "dd-mm-yy",
+                minDate: 0
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $("#doctorIdDropdown").change(function () {
+                var doctorId = $(this).val();
+                $.ajax({
+                    url: '@Url.Action("GetDoctorNameById", "Appointment")',
+                    type: 'GET',
+                    data: { id: doctorId },
+                    success: function (data) {
+                        $("#doctorName").text(data);
+                    }
+                });
+            });
+        });
+    </script>
+}

@@ -16,9 +16,10 @@ namespace bek_healthProject.Models.DAO
                 using (MySqlConnection con = SecurityConfig.GetConnection())
                 {
                     con.Open();
-                    string insertQuery = "INSERT INTO bek_doctors (lastname, address, phone_number, email, specialty) VALUES (@pLastName, @pAddress, @pPhoneNumber, @pEmail, @pSpecialty)";
+                    string insertQuery = "INSERT INTO bek_doctors (name ,lastname, address, phone_number, email, specialty) VALUES (@Name,@pLastName, @pAddress, @pPhoneNumber, @pEmail, @pSpecialty)";
                     using (var cmd = new MySqlCommand(insertQuery, con))
                     {
+                        cmd.Parameters.AddWithValue("@Name", doctor.Name);
                         cmd.Parameters.AddWithValue("@pLastName", doctor.LastName);
                         cmd.Parameters.AddWithValue("@pAddress", doctor.Address);
                         cmd.Parameters.AddWithValue("@pPhoneNumber", doctor.PhoneNumber);
@@ -30,9 +31,10 @@ namespace bek_healthProject.Models.DAO
 
                 return "Create doctor successfully.";
             }
-            catch (Exception ex)
+            catch (MySqlException ex)
             {
-                throw new Exception("An error occurred while creating doctor: " + ex.Message);
+                Console.WriteLine("An error occurred while creating doctor: " + ex.Message);
+                throw;
             }
         }
 
@@ -102,10 +104,11 @@ namespace bek_healthProject.Models.DAO
                 using (MySqlConnection con = SecurityConfig.GetConnection())
                 {
                     con.Open();
-                    String updateQuery = "UPDATE bek_doctors SET lastname = @pLastName, address = @pAddress, phone_number = @pPhoneNumber, email = @pEmail, specialty = @pSpecialty WHERE id = @pId";
+                    String updateQuery = "UPDATE bek_doctors SET name =@name ,lastname = @pLastName, address = @pAddress, phone_number = @pPhoneNumber, email = @pEmail, specialty = @pSpecialty WHERE id = @pId";
                     using (var cmd = new MySqlCommand(updateQuery, con))
                     {
                         cmd.Parameters.AddWithValue("@pId", id);
+                        cmd.Parameters.AddWithValue("@name",doctor.Name);
                         cmd.Parameters.AddWithValue("@pLastName", doctor.LastName);
                         cmd.Parameters.AddWithValue("@pAddress", doctor.Address);
                         cmd.Parameters.AddWithValue("@pPhoneNumber", doctor.PhoneNumber);
@@ -145,6 +148,7 @@ namespace bek_healthProject.Models.DAO
         private void MapDoctorFromReader(MySqlDataReader reader, DoctorDTO doctor)
         {
             doctor.Id = reader.GetInt32("id");
+            doctor.Name = reader.GetString("name");
             doctor.LastName = reader.GetString("lastname");
             doctor.Address = reader.GetString("address");
             doctor.PhoneNumber = reader.GetString("phone_number");

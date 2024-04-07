@@ -16,9 +16,24 @@ namespace bek_healthProject.Controllers
         private readonly CustomerDao customerDao = new CustomerDao(); 
         private readonly DoctorDAO doctorDao = new DoctorDAO();
         // GET: Appointment
-        public ActionResult Index()
+        public ActionResult Index(DateTime? fromDate, DateTime? toDate)
         {
-            var appointments = dao.ReadAppointments();
+            //var appointments = dao.ReadAppointments();
+            //return View(appointments);
+            List<AppointmentDTO> appointments = dao.ReadAppointments();
+
+            // Aplicar filtro si se proporcionan fechas
+            if (fromDate != null && toDate != null)
+            {
+                appointments = appointments
+                    .Where(a => a.AppointmentDate >= fromDate && a.AppointmentDate <= toDate)
+                    .ToList(); // Convertir a List<AppointmentDTO>
+            }
+
+            // Guardar las fechas en ViewBag para mantener los valores en el formulario después de enviar
+            ViewBag.FromDate = fromDate?.ToString("yyyy-MM-dd");
+            ViewBag.ToDate = toDate?.ToString("yyyy-MM-dd");
+
             return View(appointments);
         }
 

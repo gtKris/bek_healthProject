@@ -10,6 +10,10 @@
     <a href="@Url.Action("Create")" class="btn btn-success">
         <i class="fas fa-file"></i> Create New
     </a>
+
+    <a href="@Url.Action("Canceled Appointments")" class="btn btn-info">
+        <i class='fas fa-minus'></i> <i class='fas fa-file'></i> Canceled Appointments
+    </a>
 </p>
 
 <div class="row">
@@ -35,7 +39,7 @@
                         }
                         @Html.Raw("<a href='" + Url.Action("Details", new { id = item.Id }) + "' class='btn btn-info'><i class='fas fa-info-circle'></i> Details</a>")
 
-                        @Html.Raw("<a href='" + Url.Action("Delete", new { id = item.Id }) + "' class='btn btn-danger'><i class='fas fa-minus'></i> <i class='fas fa-file'></i> Delete</a>")
+                        @Html.Raw("<a href='" + Url.Action("Delete", new { id = item.Id }) + "' class='btn btn-danger'><i class='fas fa-minus'></i> <i class='fas fa-file'></i> Cancel</a>")
 
                     </div>
                 </div>

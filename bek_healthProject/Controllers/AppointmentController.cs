@@ -123,7 +123,8 @@ namespace bek_healthProject.Controllers
         // GET: Appointment/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            AppointmentDTO appointment = dao.ReadAppointment(id);
+            return View(appointment);
         }
 
         // POST: Appointment/Delete/5
@@ -132,13 +133,15 @@ namespace bek_healthProject.Controllers
         {
             try
             {
-                // TODO: Add delete logic here
-
+                TempData["SuccessMessage"] = "User deleted successfully.";
+                dao.DeleteAppointment(id);
                 return RedirectToAction("Index");
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                TempData["ErrorMessage"] = "An error occurred while trying delete the user";
+                Console.WriteLine("An error occurred while trying to delete the user" + ex);
+                return View(dao.ReadAppointments());
             }
         }
 

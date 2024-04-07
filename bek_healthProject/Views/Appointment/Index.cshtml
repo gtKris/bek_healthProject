@@ -7,7 +7,9 @@
 <h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    <a href="@Url.Action("Create")" class="btn btn-success">
+        <i class="fas fa-file"></i> Create New
+    </a>
 </p>
 
 <div class="row">
@@ -28,10 +30,13 @@
                     <div class="btn-group" role="group" aria-label="Actions">
                         @if (item.State != "CANCELED")
                         {
-                            @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-primary" })
+                            @Html.Raw("<a href='" + Url.Action("Edit", new { id = item.Id }) + "' class='btn btn-success'><i class='fas fa-edit'></i> Edit</a>")
+
                         }
-                        @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-secondary" })
-                        @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
+                        @Html.Raw("<a href='" + Url.Action("Details", new { id = item.Id }) + "' class='btn btn-info'><i class='fas fa-info-circle'></i> Details</a>")
+
+                        @Html.Raw("<a href='" + Url.Action("Delete", new { id = item.Id }) + "' class='btn btn-danger'><i class='fas fa-minus'></i> <i class='fas fa-file'></i> Delete</a>")
+
                     </div>
                 </div>
             </div>
@@ -41,3 +46,4 @@
 
 
 </div>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">

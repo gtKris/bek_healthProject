@@ -4,10 +4,12 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+
 
 <p>
-    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
+    <a href="@Url.Action("Create")" class="btn btn-success">
+        <i class="fas fa-user-plus"></i> Create New Doctor
+    </a>
 </p>
 <div class="table-responsive">
     <table class="table table-striped table-hover">
@@ -58,12 +60,16 @@
                         @Html.DisplayFor(modelItem => item.Specialty)
                     </td>
                     <td>
-                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-primary btn-sm" }) |
-                        @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-info btn-sm" }) |
-                        @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-danger btn-sm" })
+                        @Html.Raw("<a href='" + Url.Action("Edit", new { id = item.Id }) + "' class='btn btn-success'><i class='fas fa-edit'></i> Edit</a>")
+                        |
+                        @Html.Raw("<a href='" + Url.Action("Details", new { id = item.Id }) + "' class='btn btn-info'><i class='fas fa-info-circle'></i> Details</a>")
+                        |
+                        @Html.Raw("<a href='" + Url.Action("Delete", new { id = item.Id }) + "' class='btn btn-danger'><i class='fas fa-user-minus'></i> Delete</a>")
                     </td>
                 </tr>
             }
         </tbody>
     </table>
 </div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">

@@ -26,8 +26,9 @@
             </ul>
         </div>
         <div class="card-footer text-muted">
-            @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-primary" })
-            @Html.ActionLink("Back to List", "Index", new { @class = "btn btn-secondary" })
+            <a href="@Url.Action("Edit", new { id = Model.Id })" class="btn btn-success"><i class='fas fa-edit'></i>Edit</a>
+            <a href="@Url.Action("Index")" class="btn btn-primary"><i class="fas fa-arrow-left"></i>Back to List</a>
         </div>
     </div>
 </div>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">

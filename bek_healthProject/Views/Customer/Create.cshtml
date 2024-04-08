@@ -85,37 +85,25 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 
     <script>
-       @if (TempData["SuccessMessage"] != null)
-        {
-            <text>
-                swal({
-                    title: "Success",
-                    text: "@TempData["SuccessMessage"]",
-                    icon: "success",
-                    timer: 3000,
-                    buttons: false,
-                    animation: {
-                        show: 'slideIn',
-                        hide: 'slideOut'
-                    }
-                })
-            </text>
-        }
-        @if (TempData["ErrorMessage"] != null)
-        {
-            <text>
-                swal({
-                    title: "Error",
-                    text: "@TempData["ErrorMessage"]",
-                    icon: "error",
-                    timer: 3000,
-                    buttons: false,
-                    animation: {
-                        show: 'slideIn',
-                        hide: 'slideOut'
-                    }
-                })
-            </text>
-        }
+        
+              @if (TempData["ErrorMessage"] != null)
+  {
+      <text>
+          swal({
+              title: "Error",
+              text: "@TempData["ErrorMessage"]",
+              icon: "error",
+              timer: 3000,
+              buttons: false,
+              animation: {
+                  show: 'slideIn',
+                  hide: 'slideOut'
+              }
+          });
+      setTimeout(function () {
+              @{TempData["SuccessMessage"] = null;}
+          }, 3000);
+      </text>
+  }
     </script>
 }

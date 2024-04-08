@@ -61,7 +61,7 @@ namespace bek_healthProject.Models.DAO
                     }
                 }
             }
-            catch (Exception ex)
+            catch (MySqlException ex)
             {
                 Console.WriteLine("An error occurred while reading doctors: " + ex.Message);
             }
@@ -90,7 +90,7 @@ namespace bek_healthProject.Models.DAO
                     }
                 }
             }
-            catch (Exception ex)
+            catch (MySqlException  ex)
             {
                 Console.WriteLine("An error occurred while reading doctor: " + ex.Message);
             }
@@ -118,7 +118,7 @@ namespace bek_healthProject.Models.DAO
                     }
                 }
             }
-            catch (Exception ex)
+            catch (MySqlException ex)
             {
                 Console.WriteLine("An error occurred while editing doctor: " + ex.Message);
             }
@@ -139,7 +139,7 @@ namespace bek_healthProject.Models.DAO
                     }
                 }
             }
-            catch (Exception ex)
+            catch (MySqlException ex)
             {
                 Console.WriteLine("An error occurred while deleting doctor: " + ex.Message);
             }

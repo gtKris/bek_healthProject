@@ -12,7 +12,7 @@
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-       
+
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
@@ -67,6 +67,7 @@
                 <span id="customerName" class="name-span"></span>
             </div>
         </div>
+
 
         <div class="form-group">
             @Html.LabelFor(model => model.DoctorId, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -126,15 +127,23 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <button type="submit" class="btn btn-success">
+
+                    <i class="fas fa-check"></i> Create
+
+                </button>
+                <a href="@Url.Action("Index")" class="btn btn-primary"><i class="fas fa-arrow-left"></i> Back to List</a>
+
             </div>
         </div>
     </div>
+
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
@@ -148,6 +157,34 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet" />
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+
+    <script>
+
+              @if (TempData["ErrorMessage"] != null)
+  {
+      <text>
+          swal({
+              title: "Error",
+              text: "@TempData["ErrorMessage"]",
+              icon: "error",
+              timer: 3000,
+              buttons: false,
+              animation: {
+                  show: 'slideIn',
+                  hide: 'slideOut'
+              }
+          });
+      setTimeout(function () {
+              @{TempData["ErrorMessage"] = null;}
+              @{TempData["SuccessMessage"] = null;}
+          }, 3000);
+      </text>
+  }
+
+    </script>
     <script>
 
             $(document).ready(function () {
@@ -190,6 +227,7 @@
         });
     </script>
 
+
     <script>
         $(document).ready(function () {
             $("#customerIdDropdown").change(function () {
@@ -217,4 +255,8 @@
             });
         });
     </script>
+
 }
+
+
+

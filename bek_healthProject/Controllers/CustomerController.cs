@@ -44,23 +44,12 @@ namespace bek_healthProject.Controllers
             try
             {
       
-                TempData["SuccessMessage"] = "User created successfully.";
+                TempData["SuccessMessage"] = "Customer created successfully.";
                 string result = dao.CreateCustomer(customer);
                 return RedirectToAction("Index");
             }
             catch (MySqlException ex)
             {
-                if (ex.Number == 1062) 
-                {
-                    if (ex.Message.Contains("email")) 
-                    {
-                        TempData["ErrorMessage"] = "The email is already is not available"; 
-                    }
-                    else if (ex.Message.Contains("phone_number"))
-                    {
-                        TempData["ErrorMessage"] = "The phone number is not available"; 
-                    }
-                }
 
                 if (ex.Message.Contains("email"))
                 {
@@ -74,7 +63,7 @@ namespace bek_healthProject.Controllers
 
                 else
                 {
-                    TempData["ErrorMessage"] = "An error occurred while trying to create a user."; 
+                    TempData["ErrorMessage"] = "An error occurred while trying to create a Customer."; 
                 }
 
                 Console.WriteLine("An error occurred while trying to create a user: " + ex); 
@@ -96,13 +85,13 @@ namespace bek_healthProject.Controllers
             try
             {
 
-                TempData["SuccessMessage"] = "User edited successfully.";
+                TempData["SuccessMessage"] = "Customer edited successfully.";
                 dao.EditCustomer(id, customer);
                 return RedirectToAction("Index");
             }
             catch(Exception ex)
             {
-                TempData["ErrorMessage"] = "An error occurred while trying edit the user";
+                TempData["ErrorMessage"] = "An error occurred while trying edit the Customer";
                 Console.WriteLine("An error occurred while trying edit the user" + ex);
                 return RedirectToAction("Index");
             
@@ -123,14 +112,14 @@ namespace bek_healthProject.Controllers
         {
             try
             {
-                TempData["SuccessMessage"] = "User deleted successfully.";
+                TempData["SuccessMessage"] = "Customer deleted successfully.";
                 dao.DeleteCustomer(id);
                 return RedirectToAction("Index");
             }
             catch(Exception ex)
             {
-                TempData["ErrorMessage"] = "An error occurred while trying delete the user";
-                Console.WriteLine("An error occurred while trying to delete the user" + ex);
+                TempData["ErrorMessage"] = "An error occurred while trying delete the Customer";
+                Console.WriteLine("An error occurred while trying to delete the Customer" + ex);
                 return View(dao.ReadCustomers());
             }
         }

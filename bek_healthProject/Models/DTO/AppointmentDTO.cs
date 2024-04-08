@@ -28,6 +28,7 @@ namespace bek_healthProject.Models.DTO
         public string DoctorName { get; set; }
 
         [MaxLength(255, ErrorMessage = "The appointment description field cannot exceed 255 characters")]
+        [Required(ErrorMessage = "The AppointmentDescription  field is required")]
         public string AppointmentDescription { get; set; }
 
         [Required(ErrorMessage = "The state field is required")]
@@ -36,5 +37,7 @@ namespace bek_healthProject.Models.DTO
 
         [MaxLength(20, ErrorMessage = "The state field cannot exceed 20 characters")]
         public string appointment_type {  get; set; }
+
+        public DateTime? CanceledDate { get; set; }
     }
 }

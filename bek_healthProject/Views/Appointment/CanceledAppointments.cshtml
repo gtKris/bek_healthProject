@@ -1,0 +1,41 @@
+﻿@model IEnumerable<bek_healthProject.Models.DTO.AppointmentDTO>
+
+@{
+    ViewBag.Title = "Canceled Appointments";
+}
+
+<h2>Canceled Appointments</h2>
+
+<p>
+    <a href="@Url.Action("Create")" class="btn btn-success">
+        <i class="fas fa-file"></i> Create New
+    </a>
+
+    <a href="@Url.Action("Index")" class="btn btn-info">
+        <i class="fas fa-list"></i> All Appointments
+    </a>
+</p>
+
+<div class="row">
+
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Appointment ID: @item.Id</h5>
+                    <p class="card-text">Date: @Html.DisplayFor(modelItem => item.AppointmentDate)</p>
+                    <p class="card-text">Hour: @Html.DisplayFor(modelItem => item.AppointmentHour)</p>
+                    <p class="card-text">Customer Name: @Html.DisplayFor(modelItem => item.CustomerName)</p>
+                    <p class="card-text">Doctor Name: @Html.DisplayFor(modelItem => item.DoctorName)</p>
+                    <p class="card-text">Description: @Html.DisplayFor(modelItem => item.AppointmentDescription)</p>
+                    <p class="card-text">State: @Html.DisplayFor(modelItem => item.State)</p>
+                    <p class="card-text">Type: @Html.DisplayFor(modelItem => item.appointment_type)</p>
+                    <p class="card-text">Canceled Date: @Html.DisplayFor(modelItem => item.CanceledDate)</p>
+                </div>
+            </div>
+        </div>
+    }
+
+</div>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">

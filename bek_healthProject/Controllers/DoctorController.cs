@@ -40,7 +40,7 @@ namespace bek_healthProject.Controllers
             try
             {
 
-                TempData["SuccessMessage"] = "User created successfully.";
+                TempData["SuccessMessage"] = "Doctor created successfully.";
                 string result = dao.CreateDoctor(doctor);
                 return RedirectToAction("Index");
             }
@@ -59,10 +59,10 @@ namespace bek_healthProject.Controllers
                 }
                 else
                 {
-                    TempData["ErrorMessage"] = "An error occurred while trying to create a user.";
+                    TempData["ErrorMessage"] = "An error occurred while trying to create a Doctor.";
                 }
 
-                Console.WriteLine("An error occurred while trying to create a user: " + ex);
+                Console.WriteLine("An error occurred while trying to create a Doctor: " + ex);
                 return View();
             }
         }
@@ -80,13 +80,13 @@ namespace bek_healthProject.Controllers
             try
             {
 
-                TempData["SuccessMessage"] = "User edited successfully.";
+                TempData["SuccessMessage"] = "Doctor edited successfully.";
                 dao.EditDoctor(id, doctor);
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
-                TempData["ErrorMessage"] = "An error occurred while trying edit the user";
+                TempData["ErrorMessage"] = "An error occurred while trying edit the Doctor";
                 Console.WriteLine("An error occurred while trying edit the user" + ex);
                 return RedirectToAction("Index");
 
@@ -106,13 +106,13 @@ namespace bek_healthProject.Controllers
         {
             try
             {
-                TempData["SuccessMessage"] = "User deleted successfully.";
+                TempData["SuccessMessage"] = "Doctor deleted successfully.";
                 dao.DeleteDoctor(id);
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
-                TempData["ErrorMessage"] = "An error occurred while trying delete the user";
+                TempData["ErrorMessage"] = "An error occurred while trying delete the Doctor";
                 Console.WriteLine("An error occurred while trying to delete the user" + ex);
                 return View(dao.ReadDoctors());
             }

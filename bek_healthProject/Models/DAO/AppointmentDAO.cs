@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using bek_healthProject.Models.DTO;
 using MySql.Data.MySqlClient;
 
@@ -32,9 +30,10 @@ namespace bek_healthProject.Models.DAO
 
                 return "Create appointment successfully.";
             }
-            catch (Exception ex)
+            catch (MySqlException ex)
             {
-                throw new Exception("An error occurred while creating appointment: " + ex.Message);
+                Console.WriteLine("An error occurred while creating Appointment: " + ex.Message);
+                throw;
             }
         }
 
@@ -78,7 +77,7 @@ namespace bek_healthProject.Models.DAO
                     }
                 }
             }
-            catch (Exception ex)
+            catch (MySqlException ex)
             {
                 Console.WriteLine("An error occurred while reading appointments: " + ex.Message);
             }
@@ -116,7 +115,7 @@ namespace bek_healthProject.Models.DAO
                     }
                 }
             }
-            catch (Exception ex)
+            catch (MySqlException ex)
             {
                 Console.WriteLine("An error occurred while reading appointment: " + ex.Message);
             }
@@ -141,13 +140,11 @@ namespace bek_healthProject.Models.DAO
                         cmd.Parameters.AddWithValue("@pAppointmentDescription", appointment.AppointmentDescription);
                         cmd.Parameters.AddWithValue("@pState", appointment.State);
                         cmd.Parameters.AddWithValue("@appointment_type", appointment.appointment_type);
-
-                        Console.WriteLine("State value being passed: " + appointment.AppointmentDate+ appointment.State); 
                         cmd.ExecuteNonQuery();
                     }
                 }
             }
-            catch (Exception ex)
+            catch (MySqlException ex)
             {
                 Console.WriteLine("An error occurred while editing appointment: " + ex.Message);
             }
@@ -168,7 +165,7 @@ namespace bek_healthProject.Models.DAO
                     }
                 }
             }
-            catch (Exception ex)
+            catch (MySqlException ex)
             {
                 Console.WriteLine("An error occurred while deleting appointment: " + ex.Message);
             }
@@ -197,12 +194,63 @@ namespace bek_healthProject.Models.DAO
                     }
                 }
             }
-            catch (Exception ex)
+            catch (MySqlException ex)
             {
                 Console.WriteLine("An error occurred while getting doctor name: " + ex.Message);
             }
             return doctorName;
         }
+
+
+        public List<AppointmentDTO> ReadCanceledAppointments()
+        {
+            List<AppointmentDTO> canceledAppointments = new List<AppointmentDTO>();
+            try
+            {
+                using (MySqlConnection con = SecurityConfig.GetConnection())
+                {
+                    con.Open();
+                    String readCanceledAppointmentsQuery = @"
+                    SELECT cac.id, cac.appointment_date, cac.appointment_hour, cac.customer_id, c.name AS customer_name, 
+                           cac.doctor_id, d.name AS doctor_name, cac.appointment_description, 'Canceled' AS state, cac.appointment_type, cac.canceled_date
+                    FROM bek_appointments_canceled cac
+                    INNER JOIN bek_customers c ON cac.customer_id = c.id
+                    INNER JOIN bek_doctors d ON cac.doctor_id = d.id;
+            ";
+
+                    using (var cmd = new MySqlCommand(readCanceledAppointmentsQuery, con))
+                    {
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                AppointmentDTO appointment = new AppointmentDTO();
+                                appointment.Id = reader.GetInt32("id");
+                                appointment.AppointmentDate = reader.GetDateTime("appointment_date");
+                                appointment.AppointmentHour = reader.GetTimeSpan("appointment_hour");
+                                appointment.CustomerId = reader.GetInt32("customer_id");
+                                appointment.CustomerName = reader.GetString("customer_name");
+                                appointment.DoctorId = reader.GetInt32("doctor_id");
+                                appointment.DoctorName = reader.GetString("doctor_name");
+                                appointment.AppointmentDescription = reader.GetString("appointment_description");
+                                appointment.State = reader.GetString("state");
+                                appointment.appointment_type = reader.GetString("appointment_type");
+                                appointment.CanceledDate = reader.GetDateTime(reader.GetOrdinal("canceled_date"));
+
+                                canceledAppointments.Add(appointment);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (MySqlException ex)
+            {
+                Console.WriteLine("An error occurred while reading canceled appointments: " + ex.Message);
+            }
+            return canceledAppointments;
+        }
+
+
 
         private void MapAppointmentFromReader(MySqlDataReader reader, AppointmentDTO appointment)
         {

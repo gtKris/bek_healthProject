@@ -63,7 +63,7 @@ namespace bek_healthProject.Models.DAO
                     }
                 }
             }
-            catch (Exception ex)
+            catch (MySqlException ex)
             {
                 Console.WriteLine("An error occurred while reading customers: " + ex.Message);
             }
@@ -92,7 +92,7 @@ namespace bek_healthProject.Models.DAO
                     }
                 }
             }
-            catch (Exception ex)
+            catch (MySqlException ex)
             {
                 Console.WriteLine("An error occurred while reading customer: " + ex.Message);
             }
@@ -119,7 +119,7 @@ namespace bek_healthProject.Models.DAO
                     }
                 }
             }
-            catch (Exception ex)
+            catch (MySqlException ex)
             {
                 Console.WriteLine("An error occurred while editing customer: " + ex.Message);
             }
@@ -140,7 +140,7 @@ namespace bek_healthProject.Models.DAO
                     }
                 }
             }
-            catch (Exception ex)
+            catch (MySqlException ex)
             {
                 Console.WriteLine("An error occurred while deleting customer: " + ex.Message);
             }

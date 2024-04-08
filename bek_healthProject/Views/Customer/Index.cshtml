@@ -31,33 +31,68 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LastName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Address)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PhoneNumber)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Email)
-        </td>
-        <td>
-            @Html.Raw("<a href='" + Url.Action("Edit", new { id = item.Id }) + "' class='btn btn-success'><i class='fas fa-edit'></i> Edit</a>")
-            |
-            @Html.Raw("<a href='" + Url.Action("Details", new { id = item.Id }) + "' class='btn btn-info'><i class='fas fa-info-circle'></i> Details</a>")
-            |
-            @Html.Raw("<a href='" + Url.Action("Delete", new { id = item.Id }) + "' class='btn btn-danger'><i class='fas fa-user-minus'></i> Delete</a>")
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PhoneNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.Raw("<a href='" + Url.Action("Edit", new { id = item.Id }) + "' class='btn btn-success'><i class='fas fa-edit'></i> Edit</a>")
+                |
+                @Html.Raw("<a href='" + Url.Action("Details", new { id = item.Id }) + "' class='btn btn-info'><i class='fas fa-info-circle'></i> Details</a>")
+                |
+                @Html.Raw("<a href='" + Url.Action("Delete", new { id = item.Id }) + "' class='btn btn-danger'><i class='fas fa-user-minus'></i> Delete</a>")
+            </td>
+        </tr>
+    }
 
 </table>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+
+
+    <script>
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <text>
+            swal({
+                title: "Success",
+                text: "@TempData["SuccessMessage"]",
+                icon: "success",
+                timer: 3000,
+                buttons: false,
+                animation: {
+                    show: 'slideIn',
+                    hide: 'slideOut'
+                }
+            });
+        setTimeout(function () {
+                @{TempData["SuccessMessage"] = null;}
+            }, 3000); 
+        </text>
+    }
+    </script>
+
+
+}

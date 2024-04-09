@@ -7,6 +7,9 @@ using bek_healthProject.Models.DAO;
 using bek_healthProject.Models;
 using bek_healthProject.Models.DTO;
 using MySql.Data.MySqlClient;
+using Antlr.Runtime.Misc;
+using Antlr.Runtime;
+using System.Web.UI.WebControls;
 
 namespace bek_healthProject.Controllers
 {
@@ -18,6 +21,7 @@ namespace bek_healthProject.Controllers
         private CustomerDao dao = new CustomerDao();
 
         // GET: Customer
+        // The Index action retrieves all customers using the CustomerDao class and then passes them to the view.
         public ActionResult Index()
         {
             var customers = dao.ReadCustomers();
@@ -26,18 +30,22 @@ namespace bek_healthProject.Controllers
 
 
         // GET: Customer/Details/5
+        //The Details action takes an id parameter, retrieves the customer with that id using CustomerDao, and then passes the customer to the view.
         public ActionResult Details(int id)
-        {
-            return View(dao.ReadCustomer(id));
-        }
+    {
+        return View(dao.ReadCustomer(id));
+    }
 
         // GET: Customer/Create
+        //The GET action simply returns the Create view.
         public ActionResult Create()
-        {
+    {
             return View();
         }
 
         // POST: Customer/Create
+        //The POST action takes a CustomerDTO object, tries to create the customer using CustomerDao,
+        //and redirects to the Index action upon success. It also handles MySQL exceptions for duplicate email or phone number.
         [HttpPost]
         public ActionResult Create(CustomerDTO customer)
         {
@@ -73,12 +81,15 @@ namespace bek_healthProject.Controllers
 
 
         // GET: Customer/Edit/5
+        //The GET action returns the Edit view with the customer data.
         public ActionResult Edit(int id)
         {
             return View(dao.ReadCustomer(id));
         }
 
         // POST: Customer/Edit/5
+        //The POST action takes the id of the customer to edit and a CustomerDTO object,
+        //updates the customer using CustomerDao, and redirects to the Index action upon success.
         [HttpPost]
         public ActionResult Edit(int id , CustomerDTO customer)
         {
@@ -99,6 +110,7 @@ namespace bek_healthProject.Controllers
         }
 
         // GET: Customer/Delete/5
+        //The GET action retrieves the customer with the given id using CustomerDao and returns the Delete view.
         public ActionResult Delete(int id)
         {
             CustomerDTO customer = dao.ReadCustomer(id);
@@ -107,6 +119,7 @@ namespace bek_healthProject.Controllers
         }
 
         // POST: Customer/Delete/5
+        //The POST action takes the id of the customer to delete, deletes the customer using CustomerDao, and redirects to the Index action upon success.
         [HttpPost]
         public ActionResult Delete(int id, FormCollection collection)
         {

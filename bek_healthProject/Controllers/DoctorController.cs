@@ -8,6 +8,7 @@ using bek_healthProject.Models;
 using bek_healthProject.Models.DTO;
 using MySql.Data.MySqlClient;
 using System.Numerics;
+using System.Web.UI.WebControls;
 
 namespace bek_healthProject.Controllers
 {
@@ -15,6 +16,7 @@ namespace bek_healthProject.Controllers
     {
         private DoctorDAO dao = new DoctorDAO();
         // GET: Doctor
+        //Returns a view with a list of all doctors retrieved from the DAO.
         public ActionResult Index()
         {
             var doctor = dao.ReadDoctors();
@@ -22,18 +24,22 @@ namespace bek_healthProject.Controllers
         }
 
         // GET: Doctor/Details/5
+        //Returns a view displaying details of a specific doctor with the given ID.
         public ActionResult Details(int id)
         {
             return View(dao.ReadDoctor(id));
         }
 
         // GET: Doctor/Create
+        //Returns a view to create a new doctor.
         public ActionResult Create()
         {
             return View();
         }
 
         // POST: Doctor/Create
+        //Handles the POST request to create a new doctor. It calls the CreateDoctor method in the DAO.
+        //If an error occurs, it catches MySQL exceptions for duplicate entries (like email or phone number) and sets appropriate error messages.
         [HttpPost]
         public ActionResult Create(DoctorDTO doctor)
         {
@@ -68,12 +74,14 @@ namespace bek_healthProject.Controllers
         }
 
         // GET: Doctor/Edit/5
+        //Returns a view to edit details of the doctor with the given ID.
         public ActionResult Edit(int id)
         {
             return View(dao.ReadDoctor(id));
         }
 
         // POST: Doctor/Edit/5
+        //Handles the POST request to update details of a doctor with the given ID. It calls the EditDoctor method in the DAO.
         [HttpPost]
         public ActionResult Edit(int id, DoctorDTO doctor)
         {
@@ -94,6 +102,7 @@ namespace bek_healthProject.Controllers
         }
 
         // GET: Doctor/Delete/5
+        //Returns a view to confirm the deletion of the doctor with the given ID.
         public ActionResult Delete(int id)
         {
             DoctorDTO doctor = dao.ReadDoctor(id);
@@ -101,6 +110,8 @@ namespace bek_healthProject.Controllers
         }
 
         // POST: Doctor/Delete/5
+        //Handles the POST request to delete the doctor with the given ID. It calls the DeleteDoctor method in the DAO.
+        //If an error occurs, it catches exceptions and redirects to the index view.
         [HttpPost]
         public ActionResult Delete(int id, DoctorDTO doctor)
         {

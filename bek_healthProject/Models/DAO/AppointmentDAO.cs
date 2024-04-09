@@ -1,12 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Management.Instrumentation;
+using System.Web.Caching;
+using System.Web.Services.Description;
 using bek_healthProject.Models.DTO;
 using MySql.Data.MySqlClient;
+using Mysqlx.Cursor;
+using MySqlX.XDevAPI.Common;
+using Org.BouncyCastle.Utilities;
 
 namespace bek_healthProject.Models.DAO
 {
     public class AppointmentDAO
     {
+        //This method creates a new appointment in the database using a parameterized query to prevent SQL injection.
+        //It takes an AppointmentDTO object as a parameter.
+        //It opens a connection (MySqlConnection) using a method from SecurityConfig.
+        //Inside a using block, it creates a MySqlCommand with the SQL query.
+        //It binds parameters with values from the AppointmentDTO.
+        //Finally, it executes the query and returns a success message, or catches and logs any MySqlException.
         public string CreateAppointment(AppointmentDTO appointment)
         {
             try
@@ -37,6 +49,11 @@ namespace bek_healthProject.Models.DAO
             }
         }
 
+        //This method retrieves a list of appointments from the database, along with customer and doctor names.
+        //It creates a list of AppointmentDTO objects.
+        //Inside a using block, it opens a connection and executes the SQL query.
+        //It uses MySqlDataReader to read the results and maps them to AppointmentDTO objects using MapAppointmentFromReader method.
+        //The appointments are then added to the list and returned, or any exceptions are caught and logged.
         public List<AppointmentDTO> ReadAppointments()
         {
             List<AppointmentDTO> appointments = new List<AppointmentDTO>();
@@ -85,7 +102,11 @@ namespace bek_healthProject.Models.DAO
         }
 
 
-
+        //This method retrieves a single appointment by its ID from the database.
+        //It creates a new AppointmentDTO object.
+        //It opens a connection and executes the SQL query to fetch the specific appointment.
+        //The appointment data is then mapped to the AppointmentDTO object using MapAppointmentFromReader method.
+        //The method returns the appointment or catches and logs any exceptions.
         public AppointmentDTO ReadAppointment(int id)
         {
             AppointmentDTO appointment = new AppointmentDTO();
@@ -122,7 +143,11 @@ namespace bek_healthProject.Models.DAO
             return appointment;
         }
 
-
+        //Updates an existing appointment in the database.
+        //This method updates an existing appointment in the database.
+        //It takes the appointment ID and an AppointmentDTO object as parameters.
+        //It opens a connection and executes an update SQL query with new values from the AppointmentDTO.
+        //The method catches and logs any exceptions that occur during the update process.
         public void EditAppointment(int id, AppointmentDTO appointment)
         {
             try
@@ -150,6 +175,10 @@ namespace bek_healthProject.Models.DAO
             }
         }
 
+        //Deletes an appointment from the database.
+        //This method deletes an appointment from the database based on its ID.
+        //It opens a connection and executes a delete SQL query.
+        //The method catches and logs any exceptions that occur during the deletion process.
         public void DeleteAppointment(int id)
         {
             try
@@ -171,9 +200,16 @@ namespace bek_healthProject.Models.DAO
             }
         }
 
-    
 
-  
+
+        //Retrieves the name of a doctor by their ID.
+        /*
+        This is a private helper method to retrieve a doctor's name by their ID.
+        It takes the doctorId as a parameter.
+        It opens a connection and executes a SQL query to fetch the doctor's name.
+        If the query returns a result, it sets doctorName to that value and returns it.
+        The method catches and logs any exceptions.
+         */
         private string GetDoctorNameById(int doctorId)
         {
             string doctorName = "";
@@ -201,7 +237,13 @@ namespace bek_healthProject.Models.DAO
             return doctorName;
         }
 
-
+        /*
+        This method retrieves a list of canceled appointments from the database, along with customer and doctor names.
+        It creates a list of AppointmentDTO objects to store the canceled appointments.
+        It opens a connection and executes the SQL query to fetch the data.
+        The method reads the results using MySqlDataReader and maps them to AppointmentDTO objects.
+        The canceled appointments are then added to the list and returned, or any exceptions are caught and logged.
+         */
         public List<AppointmentDTO> ReadCanceledAppointments()
         {
             List<AppointmentDTO> canceledAppointments = new List<AppointmentDTO>();
@@ -251,7 +293,11 @@ namespace bek_healthProject.Models.DAO
         }
 
 
-
+        /*
+        This is a private helper method to map appointment data from a MySqlDataReader to an AppointmentDTO object.
+        It takes a MySqlDataReader object and an AppointmentDTO object as parameters.
+        It reads data from the reader and assigns it to corresponding properties of the AppointmentDTO 
+         */
         private void MapAppointmentFromReader(MySqlDataReader reader, AppointmentDTO appointment)
         {
             appointment.Id = reader.GetInt32("id");

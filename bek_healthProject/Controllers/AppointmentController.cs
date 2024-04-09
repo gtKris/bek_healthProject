@@ -1,21 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Management.Instrumentation;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Services.Description;
 using bek_healthProject.Models.DAO;
 using bek_healthProject.Models.DTO;
+using Google.Protobuf.Collections;
+using Google.Protobuf.WellKnownTypes;
 using MySql.Data.MySqlClient;
+using Mysqlx.Crud;
+using ZstdSharp.Unsafe;
+using static System.Data.Entity.Infrastructure.Design.Executor;
 
 
 namespace bek_healthProject.Controllers
 {
     public class AppointmentController : Controller
     {
+        //Create an instance of the AppointmentDAO class. This class contains methods to perform operations related to medical appointments on the database.
+        //The dao instance will be used in the controller to call methods such as CreateAppointment, ReadAppointments, EditAppointment, and DeleteAppointment, among others.
         private AppointmentDAO dao = new AppointmentDAO();
-        private readonly CustomerDao customerDao = new CustomerDao(); 
+
+        //Create an instance of the CustomerDao class. This class contains methods to perform customer-related operations on the database.
+        //The customerDao instance will be used in the controller to call methods like ReadCustomers or other methods that handle customer-related operations.
+        private readonly CustomerDao customerDao = new CustomerDao();
+
+        //Create an instance of the DoctorDAO class. This class contains methods to perform operations related to doctors on the database.
+        //The doctorDao instance will be used in the controller to call methods like ReadDoctors or other methods that handle doctor-related operations.
         private readonly DoctorDAO doctorDao = new DoctorDAO();
+        
         // GET: Appointment
+        //Retrieves appointments from the DAO.
+        //Filters appointments based on provided date ranges.
+        //Passes filtered appointments to the view along with date range values.
         public ActionResult Index(DateTime? fromDate, DateTime? toDate)
         {
             //var appointments = dao.ReadAppointments();
@@ -38,11 +57,12 @@ namespace bek_healthProject.Controllers
         }
 
         // GET: Appointment/Canceled
+        //Similar to Index, but retrieves canceled appointments.
         public ActionResult CanceledAppointments(DateTime? fromDate, DateTime? toDate)
         {
             List<AppointmentDTO> canceledAppointments = dao.ReadCanceledAppointments();
 
-            // Aplicar filtro si se proporcionan fechas
+            // Apply filter if dates are provided
             if (fromDate != null && toDate != null)
             {
                 canceledAppointments = canceledAppointments
@@ -58,6 +78,7 @@ namespace bek_healthProject.Controllers
 
 
         // GET: Appointment/Details/5
+        //Reads details of a specific appointment by ID.
         public ActionResult Details(int id)
         {
             return View(dao.ReadAppointment(id));
@@ -65,6 +86,8 @@ namespace bek_healthProject.Controllers
 
 
         // GET: Appointment/Create
+        //Prepares data for creating a new appointment.
+        //Retrieves customer and doctor IDs for dropdown lists
         public ActionResult Create()
         {
             try
@@ -97,6 +120,9 @@ namespace bek_healthProject.Controllers
 
 
         // POST: Appointment/Create
+        //Handles form submission for creating a new appointment.
+        //Validates input and saves the appointment.
+        //Handles specific exceptions and displays corresponding error messages.
         [HttpPost]
         public ActionResult Create(AppointmentDTO appointmet)
         {
@@ -108,7 +134,7 @@ namespace bek_healthProject.Controllers
             }
             catch (MySqlException ex)
             {
-                // Manejar excepciones específicas si es necesario
+                // Handle specific exceptions if necessary
                 if (ex.Message.Contains("Sundays"))
                 {
                     TempData["ErrorMessage"] = "Appointments cannot be scheduled on Sundays";
@@ -149,7 +175,7 @@ namespace bek_healthProject.Controllers
                     TempData["ErrorMessage"] = "The client already has an appointment at that time";
                 }
 
-                // Recuperar datos necesarios para las listas desplegables
+                // Retrieve data needed for dropdown lists
                 var customerIds = customerDao.ReadCustomers().Select(c => new SelectListItem
                 {
                     Value = c.Id.ToString(),
@@ -162,17 +188,19 @@ namespace bek_healthProject.Controllers
                     Text = d.Id.ToString()
                 }).ToList();
 
-                // Pasar los datos a la vista
+                // Pass data to view
                 ViewBag.CustomerIds = customerIds;
                 ViewBag.DoctorIds = doctorsIds;
 
-                // Devolver la vista con los datos actualizados y el mensaje de error
+                // Return the view with updated data and error message
                 return View(appointmet);
             }
         }
 
 
         // GET: Appointment/Edit/5
+        //Prepares data for editing an existing appointment.
+        //Retrieves customer and doctor IDs for dropdown lists.
         public ActionResult Edit(int id)
         {
             var appointment = dao.ReadAppointment(id);
@@ -201,6 +229,8 @@ namespace bek_healthProject.Controllers
         }
 
         // POST: Appointment/Edit/5
+        //Handles form submission for editing an appointment.
+        //Updates the appointment with new data.
         [HttpPost]
         public ActionResult Edit(int id, AppointmentDTO appointment)
         {
@@ -221,6 +251,7 @@ namespace bek_healthProject.Controllers
         }
 
         // GET: Appointment/Delete/5
+        //Retrieves appointment details for confirmation before deletion
         public ActionResult Delete(int id)
         {
             AppointmentDTO appointment = dao.ReadAppointment(id);
@@ -228,6 +259,7 @@ namespace bek_healthProject.Controllers
         }
 
         // POST: Appointment/Delete/5
+        //Handles deletion of an appointment
         [HttpPost]
         public ActionResult Delete(int id, FormCollection collection)
         {
@@ -245,12 +277,14 @@ namespace bek_healthProject.Controllers
             }
         }
 
+        //Retrieves customer name by ID using AJAX
         public ActionResult GetCustomerNameById(int id)
         {
             var customer = customerDao.ReadCustomer(id);
             return Json(customer.Name, JsonRequestBehavior.AllowGet);
         }
 
+        //Retrieves doctor name by ID using AJAX.
         public ActionResult GetDoctorNameById(int id)
         {
             var doctor = doctorDao.ReadDoctor(id);

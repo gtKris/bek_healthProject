@@ -6,6 +6,7 @@ using System.Web;
 
 namespace bek_healthProject.Models.DTO
 {
+    //This model represents the Appointment entity, defining its properties and validation rules.
     public class AppointmentDTO
     {
         public int Id { get; set; }

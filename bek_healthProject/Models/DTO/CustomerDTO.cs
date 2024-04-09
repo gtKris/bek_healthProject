@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Helpers;
 
 namespace bek_healthProject.Models.DTO
 {
+    //The CustomerDTO class represents the data transfer object for a customer.
+    //It includes properties for Id, Name, LastName, Address, PhoneNumber, and Email.
+    //Each property has validation attributes for required fields, maximum lengths, and regular expressions for proper formats.
     public class CustomerDTO
     {
         public int Id { get; set; }

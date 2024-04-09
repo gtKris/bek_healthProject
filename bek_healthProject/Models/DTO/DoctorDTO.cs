@@ -8,6 +8,10 @@ namespace bek_healthProject.Models.DTO
 {
     public class DoctorDTO
     {
+        // The DoctorDTO class defines the structure of a doctor object used for data transfer.
+        //It includes properties for the ID, name, last name, address, phone number, email, and specialty of a doctor.
+        //The properties have data annotations for validation, such as required fields, maximum lengths, and regular expressions for valid formats.
+
         public int Id { get; set; }
 
         [Required(ErrorMessage = "The name field is required")]

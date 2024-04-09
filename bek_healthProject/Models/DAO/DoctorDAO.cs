@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Numerics;
-using System.Web;
 using bek_healthProject.Models.DTO;
 using MySql.Data.MySqlClient;
-using Mysqlx.Crud;
+
 
 namespace bek_healthProject.Models.DAO
 {

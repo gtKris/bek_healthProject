@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using bek_healthProject.Models.DAO;
-using bek_healthProject.Models;
 using bek_healthProject.Models.DTO;
 using MySql.Data.MySqlClient;
-using System.Numerics;
-using System.Web.UI.WebControls;
+
 
 namespace bek_healthProject.Controllers
 {

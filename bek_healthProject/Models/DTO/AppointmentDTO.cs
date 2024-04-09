@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
+
 
 namespace bek_healthProject.Models.DTO
 {
@@ -37,8 +35,10 @@ namespace bek_healthProject.Models.DTO
         public string State { get; set; }
 
         [MaxLength(20, ErrorMessage = "The state field cannot exceed 20 characters")]
-        public string appointment_type {  get; set; }
 
+        [Required(ErrorMessage = "The appointment_type field is required")]
+        public string appointment_type { get; set; }
+        [Required(ErrorMessage = "The appointment_type field is required")]
         public DateTime? CanceledDate { get; set; }
     }
 }

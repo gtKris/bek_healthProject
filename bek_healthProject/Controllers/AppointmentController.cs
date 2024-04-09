@@ -1,19 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Management.Instrumentation;
-using System.Web;
 using System.Web.Mvc;
-using System.Web.Services.Description;
 using bek_healthProject.Models.DAO;
 using bek_healthProject.Models.DTO;
-using Google.Protobuf.Collections;
-using Google.Protobuf.WellKnownTypes;
 using MySql.Data.MySqlClient;
-using Mysqlx.Crud;
-using ZstdSharp.Unsafe;
-using static System.Data.Entity.Infrastructure.Design.Executor;
-
 
 namespace bek_healthProject.Controllers
 {
@@ -205,7 +196,7 @@ namespace bek_healthProject.Controllers
         {
             var appointment = dao.ReadAppointment(id);
 
-            // Obtener la lista de IDs y nombres de clientes
+         
             var customerIds = customerDao.ReadCustomers().Select(c => new SelectListItem
             {
                 Value = c.Id.ToString(),

@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Web;
 using bek_healthProject.Models.DTO;
 using MySql.Data.MySqlClient;
 

@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Management.Instrumentation;
-using System.Web.Caching;
-using System.Web.Services.Description;
 using bek_healthProject.Models.DTO;
 using MySql.Data.MySqlClient;
-using Mysqlx.Cursor;
-using MySqlX.XDevAPI.Common;
-using Org.BouncyCastle.Utilities;
+
 
 namespace bek_healthProject.Models.DAO
 {
@@ -199,43 +194,7 @@ namespace bek_healthProject.Models.DAO
                 Console.WriteLine("An error occurred while deleting appointment: " + ex.Message);
             }
         }
-
-
-
-        //Retrieves the name of a doctor by their ID.
-        /*
-        This is a private helper method to retrieve a doctor's name by their ID.
-        It takes the doctorId as a parameter.
-        It opens a connection and executes a SQL query to fetch the doctor's name.
-        If the query returns a result, it sets doctorName to that value and returns it.
-        The method catches and logs any exceptions.
-         */
-        private string GetDoctorNameById(int doctorId)
-        {
-            string doctorName = "";
-            try
-            {
-                using (MySqlConnection con = SecurityConfig.GetConnection())
-                {
-                    con.Open();
-                    string query = "SELECT doctor_name FROM bek_doctors WHERE id = @pDoctorId";
-                    using (var cmd = new MySqlCommand(query, con))
-                    {
-                        cmd.Parameters.AddWithValue("@pDoctorId", doctorId);
-                        object result = cmd.ExecuteScalar();
-                        if (result != null)
-                        {
-                            doctorName = result.ToString();
-                        }
-                    }
-                }
-            }
-            catch (MySqlException ex)
-            {
-                Console.WriteLine("An error occurred while getting doctor name: " + ex.Message);
-            }
-            return doctorName;
-        }
+       
 
         /*
         This method retrieves a list of canceled appointments from the database, along with customer and doctor names.
